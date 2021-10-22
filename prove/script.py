@@ -1,4 +1,6 @@
-x=1
-print(x)
-aggiunto
-2
+from sympy import *
+T_pot,T = symbols('x y')
+
+c_p = q
+
+theta = T*((p_0/p)**(R/c_p))
