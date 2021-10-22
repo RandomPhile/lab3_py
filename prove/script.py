@@ -1,5 +1,4 @@
 x=1
 print(x)
-ciao
-come 
-asdasd
+aggiunto
+2
