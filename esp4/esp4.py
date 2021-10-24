@@ -77,6 +77,5 @@ ax3.minorticks_on()
 ax3.grid(b=True, which='major', color='gray', linestyle='-', alpha=0.3)
 ax3.grid(b=True, which='minor', color='gray', linestyle=':', alpha=0.3)
 
-
 #fig1.show()
 #fig2.show()
