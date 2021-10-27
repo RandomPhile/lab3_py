@@ -12,7 +12,7 @@ f        160Hz
 
 '''
 
-with open('parte1/scope_2.csv', newline='') as csvfile:
+with open('parte1/scope_3.csv', newline='') as csvfile:
 	t = np.array([])
 	V = np.array([])
 	reader = csv.DictReader(csvfile)
