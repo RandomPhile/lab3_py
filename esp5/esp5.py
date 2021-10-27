@@ -18,12 +18,12 @@ plt.plot(V, I, 'b-', label='data')
 
 
 #Senza intervallo di R_L, alpha
-#popt, pcov = curve_fit(I_func, V, I)
-#plt.plot(V, I_func(V, *popt), 'r-', label='fit: R_L=%5.3f, alpha=%5.3f' % tuple(popt))
+popt, pcov = curve_fit(I_func, V, I)
+plt.plot(V, I_func(V, *popt), 'r-', label='fit: R_L=%5.3f, alpha=%5.3f' % tuple(popt))
 
 #Con intervallo
-#popt, pcov = curve_fit(I_func, V, I, bounds=([400,-1], [450, 1]))
-#plt.plot(V, I_func(V, *popt), 'g--', label='fit: R_L=%5.3f, alpha=%5.3f' % tuple(popt))
+popt, pcov = curve_fit(I_func, V, I, bounds=([400,-1], [450, 1]))
+plt.plot(V, I_func(V, *popt), 'g--', label='fit: R_L=%5.3f, alpha=%5.3f' % tuple(popt))
 
 
 
