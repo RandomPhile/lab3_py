@@ -27,4 +27,4 @@ ax1.plot(rapporto, T, 'r*', label='periodo')
 ax1.legend()
 
 print(log(21))
-#plt.show()
+#plt.show()#
