@@ -14,7 +14,6 @@ R2 = np.array([0  , 100 , 100, 1e3, 10e3, 100e3])
 
 epsilon = R2/R1
 #epsilon = epsilon[:-1]
-print(epsilon)
 
 t = np.array([
 	[0, 100, 200, 300, 400, 500, 600, 700, 800],
@@ -48,8 +47,9 @@ for row in range(np.shape(epsilon)[0]):
 	t_smorzamento.append(abs(m))
 
 	ax0.plot(t[row][:], V[row][:], colori[row])
+	ax1.plot(t[row][:], ln_V_reg, colori[row]+'--', linewidth=1)
 	ax1.plot(t[row][:], ln_V[row][:], colori[row])
-	ax1.plot(t[row][:], ln_V_reg, colori[row]+'--')
+	#ax0.plot(t[row][:], np.exp(ln_V_reg), colori[row]+'--')
 	
 	legend.append(r'$\epsilon = $' + "{:.0e}".format(epsilon[row]))
 
@@ -107,8 +107,8 @@ ax3.minorticks_on()
 ax3.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
 ax3.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
 
-#fig1.savefig('fig1.eps', format='eps')
+#fig1.savefig('fig/fig1.eps', format='eps')
 #fig1.show()
 
-fig2.savefig('fig2.eps', format='eps')
-fig2.show()
+#fig2.savefig('fig/fig2_zoom.eps', format='eps')
+#fig2.show()
