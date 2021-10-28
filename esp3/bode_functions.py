@@ -47,10 +47,10 @@ def bode_plot(f, G, ax0,ax1, colore='None', primo=True,errori=False):
 	
 
 	ax0.minorticks_on()
-	ax0.grid(b=True, which='major', color='gray', linestyle='-', alpha=0.3)
-	ax0.grid(b=True, which='minor', color='gray', linestyle=':', alpha=0.3)
+	ax0.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
+	ax0.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
 
 	ax1.minorticks_on()
-	ax1.grid(b=True, which='major', color='gray', linestyle='-', alpha=0.3)
-	ax1.grid(b=True, which='minor', color='gray', linestyle=':', alpha=0.3)
+	ax1.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
+	ax1.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
 
