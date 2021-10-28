@@ -51,7 +51,7 @@ for row in range(np.shape(epsilon)[0]):
 	ax1.plot(t[row][:], ln_V[row][:], colori[row])
 	ax1.plot(t[row][:], ln_V_reg, colori[row]+'--')
 	
-	legend.append('ε=' + "{:.0e}".format(epsilon[row]))
+	legend.append(r'$\epsilon = $' + "{:.0e}".format(epsilon[row]))
 
 
 fig2 = plt.figure()
@@ -62,11 +62,9 @@ w0 = 1/(R*C)
 #calcolo r0 a partire dai valori medi di t_smorzamento e di r
 r_medio = np.mean(r)
 t_smorzamento_medio = np.mean(t_smorzamento)
+r0 = t_smorzamento_medio/w0 - r_medio
 
-
-#r0 = 0.0035
-
-print(r0)
+print('r_0 =', r0)
 r_mod = np.linspace(0, max(r))
 t_smorzamento_mod = r_mod * w0
 t_smorzamento_mod2 = (r_mod + r0) * w0
@@ -83,29 +81,34 @@ ax3.set_xscale('log')
 
 ax0.legend(legend)
 
-ax0.set_ylabel('V₁ (V)')
-ax1.set_ylabel('ln(V₁/V)')
-ax1.set_xlabel('t (s)')
+ax0.set_ylabel(r'$V_1\ [V]$')
+ax1.set_ylabel(r'$ln(V_1/V)$')
+ax1.set_xlabel(r'$t\ [s]$')
 
 ax0.minorticks_on()
-ax0.grid(b=True, which='major', color='gray', linestyle='-', alpha=0.3)
-ax0.grid(b=True, which='minor', color='gray', linestyle=':', alpha=0.3)
+ax0.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
+ax0.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
 
 ax1.minorticks_on()
-ax1.grid(b=True, which='major', color='gray', linestyle='-', alpha=0.3)
-ax1.grid(b=True, which='minor', color='gray', linestyle=':', alpha=0.3)
+ax1.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
+ax1.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
 
-ax2.set_ylabel(r'$1/\tau$ ($s^{-1}$)')
-ax3.set_ylabel(r'$1/\tau$ ($s^{-1}$)')
+ax2.set_ylabel(r'$\omega_s\ [s^{-1}]$')
+ax3.set_ylabel(r'$\omega_s\ [s^{-1}]$')
 ax3.set_xlabel(r'$r = \frac{\epsilon}{\epsilon + 1}$')
 
+ax2.legend(['Dati', r'Modello $r_0 = 0$', r'Modello $r_0 = 0.0025$'])
+
 ax2.minorticks_on()
-ax2.grid(b=True, which='major', color='gray', linestyle='-', alpha=0.3)
-ax2.grid(b=True, which='minor', color='gray', linestyle=':', alpha=0.3)
+ax2.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
+ax2.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
 
 ax3.minorticks_on()
-ax3.grid(b=True, which='major', color='gray', linestyle='-', alpha=0.3)
-ax3.grid(b=True, which='minor', color='gray', linestyle=':', alpha=0.3)
+ax3.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
+ax3.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
 
+#fig1.savefig('fig1.eps', format='eps')
 #fig1.show()
+
+fig2.savefig('fig2.eps', format='eps')
 fig2.show()
