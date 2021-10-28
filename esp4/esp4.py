@@ -7,27 +7,13 @@ colori = ['b','g','r','c','m','y','k']
 import matplotlib
 matplotlib.rcParams['text.usetex'] = True
 
-t = np.linspace(0.0, 1.0, 100)
-s = np.cos(4 * np.pi * t) + 2
-
-fig, ax = plt.subplots(figsize=(6, 4), tight_layout=True)
-ax.plot(t, s)
-
-ax.set_xlabel(r'\textbf{time (s)}')
-ax.set_ylabel('\\textit{Velocity (\N{DEGREE SIGN}/sec)}', fontsize=16)
-ax.set_title(r'\TeX\ is Number $\displaystyle\sum_{n=1}^\infty'
-             r'\frac{-e^{i\pi}}{2^n}$!', fontsize=16, color='r')
-
-'''
 #oscillatore smorzato
 R = 100e3; C = 10e-9; 
-#R1 = np.array([1e6, 10e6, 1e6, 1e6, 1e6 ])#, 1e6  
-#R2 = np.array([0  , 100 , 100, 1e3, 10e3])#, 100e3
 R1 = np.array([1e6, 10e6, 1e6, 1e6, 1e6 , 1e6])
 R2 = np.array([0  , 100 , 100, 1e3, 10e3, 100e3])
 
 epsilon = R2/R1
-epsilon = epsilon[:-1]
+#epsilon = epsilon[:-1]
 print(epsilon)
 
 t = np.array([
@@ -72,9 +58,15 @@ fig2 = plt.figure()
 ax2,ax3 = fig2.subplots(2,1)
 
 r = epsilon/(1+epsilon)
-print(r)
 w0 = 1/(R*C)
-r0 = 0.0035
+#calcolo r0 a partire dai valori medi di t_smorzamento e di r
+r_medio = np.mean(r)
+t_smorzamento_medio = np.mean(t_smorzamento)
+
+
+#r0 = 0.0035
+
+print(r0)
 r_mod = np.linspace(0, max(r))
 t_smorzamento_mod = r_mod * w0
 t_smorzamento_mod2 = (r_mod + r0) * w0
@@ -103,9 +95,9 @@ ax1.minorticks_on()
 ax1.grid(b=True, which='major', color='gray', linestyle='-', alpha=0.3)
 ax1.grid(b=True, which='minor', color='gray', linestyle=':', alpha=0.3)
 
-ax2.set_ylabel('t_smorzamento')
-ax3.set_ylabel('t_smorzamento')
-ax3.set_xlabel('ε/(1+ε)')
+ax2.set_ylabel(r'$1/\tau$ ($s^{-1}$)')
+ax3.set_ylabel(r'$1/\tau$ ($s^{-1}$)')
+ax3.set_xlabel(r'$r = \frac{\epsilon}{\epsilon + 1}$')
 
 ax2.minorticks_on()
 ax2.grid(b=True, which='major', color='gray', linestyle='-', alpha=0.3)
@@ -117,4 +109,3 @@ ax3.grid(b=True, which='minor', color='gray', linestyle=':', alpha=0.3)
 
 #fig1.show()
 fig2.show()
-'''
