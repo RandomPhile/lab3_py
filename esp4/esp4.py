@@ -110,5 +110,5 @@ ax3.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
 #fig1.savefig('fig/fig1.eps', format='eps')
 #fig1.show()
 
-#fig2.savefig('fig/fig2_zoom.eps', format='eps')
+#fig2.savefig('fig/fig2.eps', format='eps')
 #fig2.show()
