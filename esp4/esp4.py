@@ -35,7 +35,7 @@ V = np.array([
 
 ln_V = np.log(V)
 
-t_smorzamento = []
+ws = []
 
 fig1 = plt.figure()
 ax0,ax1 = fig1.subplots(2,1)
@@ -44,7 +44,7 @@ legend = []
 for row in range(np.shape(epsilon)[0]):
 	m, q, ln_V_reg = reg_lin(t[row][:], ln_V[row][:])
 
-	t_smorzamento.append(abs(m))
+	ws.append(abs(m))
 
 	ax0.plot(t[row][:], V[row][:], colori[row])
 	ax1.plot(t[row][:], ln_V_reg, colori[row]+'--', linewidth=1)
@@ -59,24 +59,27 @@ ax2,ax3 = fig2.subplots(2,1)
 
 r = epsilon/(1+epsilon)
 w0 = 1/(R*C)
-#calcolo r0 a partire dai valori medi di t_smorzamento e di r
+#calcolo r0 a partire dai valori medi di ws e di r
 r_medio = np.mean(r)
-t_smorzamento_medio = np.mean(t_smorzamento)
-r0 = t_smorzamento_medio/w0 - r_medio
+ws_medio = np.mean(ws)
+r0 = ws_medio/w0 - r_medio
 
 print('r_0 =', r0)
 r_mod = np.linspace(0, max(r))
-t_smorzamento_mod = r_mod * w0
-t_smorzamento_mod2 = (r_mod + r0) * w0
-print(t_smorzamento_mod[0])
-print(t_smorzamento_mod2[0])
+ws_mod = r_mod * w0
+ws_mod2 = (r_mod + r0) * w0
 
-ax2.plot(r, t_smorzamento, 'bo')
-ax2.plot(r_mod, t_smorzamento_mod, 'k-')
-ax2.plot(r_mod, t_smorzamento_mod2, 'r--')
-ax3.plot(r, t_smorzamento, 'bo')
-ax3.plot(r_mod, t_smorzamento_mod, 'k-')
-ax3.plot(r_mod, t_smorzamento_mod2, 'r--')
+np.seterr(divide='ignore')
+print('ws(0) =', ws[0], 's^-1       tau(0) =', 1/ws[0], 's')
+print('ws(0) =', ws_mod[0], 's^-1                     tau(0) =', 1/ws_mod[0], 's')
+print('ws(0) =', ws_mod2[0], 's^-1      tau(0) =', 1/ws_mod2[0], 's')
+
+ax2.plot(r, ws, 'bo')
+ax2.plot(r_mod, ws_mod, 'k-')
+ax2.plot(r_mod, ws_mod2, 'r--')
+ax3.plot(r, ws, 'bo')
+ax3.plot(r_mod, ws_mod, 'k-')
+ax3.plot(r_mod, ws_mod2, 'r--')
 ax3.set_xscale('log')
 
 ax0.legend(legend)
