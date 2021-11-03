@@ -9,71 +9,23 @@ colori = ['b','g','r','c','m','y','k']
 #t,V1,V2 = data_from_csv('reconstructionExample/sine_100_Hz')
 
 parametri = [
-{'name': 'reconstructionExample/sine_100_Hz', 'T': 0.001, 'delay': -0.0001, 'alias': False},
-{'name': 'misure2/scope_0', 'T': 1/1005.3, 'delay': 0.00033, 'alias': False},
-{'name': 'misure2/scope_1', 'T': 1/1005.3, 'delay': 0.00052, 'alias': False},
-{'name': 'misure2/scope_2', 'T': 1/1005.3, 'delay': 0.00011, 'alias': False},
-{'name': 'misure2/scope_3', 'T': 1/1005.3, 'delay': -0.00012, 'alias': True},
-{'name': 'misure2/scope_4', 'T': 1/1005.3, 'delay': 0.00052, 'alias': True},
-{'name': 'misure2/scope_5', 'T': 1/1005.3, 'delay': 0.00002, 'alias': True},
-{'name': 'misure2/scope_6', 'T': 1/1005.3, 'delay': 0.00024, 'alias': True},
-{'name': 'misure2/scope_7', 'T': 1/1005.3, 'delay': 0.00051, 'alias': True},
+{'name': 'reconstructionExample/sine_100_Hz', 'T': 0.001, 'delay': -0.0001, 'err': False},
+{'name': 'misure2/scope_0', 'T': 1/1005.3, 'delay': 0.00033, 'err': False},
+{'name': 'misure2/scope_1', 'T': 1/1005.3, 'delay': 0.00052, 'err': False},
+{'name': 'misure2/scope_2', 'T': 1/1005.3, 'delay': 0.00011, 'err': False},
+{'name': 'misure2/scope_3', 'T': 1/1005.3, 'delay': 0.00038, 'err': True},
+{'name': 'misure2/scope_4', 'T': 1/1005.3, 'delay': 0.00045, 'err': False},
+{'name': 'misure2/scope_5', 'T': 1/1005.3, 'delay':-0.00003, 'err': False},
+{'name': 'misure2/scope_6', 'T': 1/1005.3, 'delay': 0.00020, 'err': False},
+{'name': 'misure2/scope_7', 'T': 1/1005.3, 'delay': 0.00044, 'err': False},
 ]
 
-n = 4
-name = parametri[n]['name']
-T = parametri[n]['T']
-delay = parametri[n]['delay']
-alias = parametri[n]['alias']
 
-t,V1,V2 = data_from_csv(name,True)
-t_pt,V_pt,r_tr,r_sinc = reconstruct(t,V2,T,delay,alias)
+for n in [1,2,3,4,5,6,7,8]:
+	print(n)
+	name,T,delay,err = parametri[n]['name'],parametri[n]['T'],parametri[n]['delay'],parametri[n]['err']
 
-t_min, t_max = -0.02,0.02
+	t,V1,V2 = data_from_csv(name,True)
+	t_pt,V_pt,r_tr,r_sinc = reconstruct(t,V2,T,delay,err)
 
-index_t = (t < t_min) | (t > t_max)
-index_t_pt = (t_pt < t_min) | (t_pt > t_max)
-V1 = np.delete(V1, index_t)
-V2 = np.delete(V2, index_t)
-r_tr = np.delete(r_tr, index_t)
-r_sinc = np.delete(r_sinc, index_t)
-t = np.delete(t, index_t)
-V_pt = np.delete(V_pt, index_t_pt)
-t_pt = np.delete(t_pt, index_t_pt)
-
-
-
-fig = plt.figure()
-ax0,ax1 = fig.subplots(2,1)
-
-ax0.plot(t,V1, 'b-', label='Segnale', linewidth=1)
-ax0.plot(t,V2, 'g-', label='Campionamento')
-ax0.plot(t_pt,V_pt, 'k+', label='Punti campionati')
-
-ax1.plot(t,V1, 'b-', label='Segnale', linewidth=1)
-ax1.plot(t,V2, 'g-', label='Campionamento')
-ax1.plot(t_pt,V_pt, 'k+', label='Punti campionati')
-
-ax0.plot(t, r_tr, 'r-', linewidth=0.7)
-ax1.plot(t, r_sinc, 'r-', linewidth=0.7)
-
-# ax0.set_xlim([-0.02, 0.02])
-# ax1.set_xlim([-0.02, 0.02])
-
-# ax0.axis([-0.002, 0.002, -1, 1])
-# ax1.axis([-0.020, -0.016, -1, 1])
-
-ax1.set_xlabel('t [s]')
-ax0.set_ylabel('V [V]')
-ax1.set_ylabel('V [V]')
-#ax0.legend()
-
-ax0.minorticks_on()
-ax0.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
-ax0.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
-
-ax1.minorticks_on()
-ax1.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
-ax1.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
-fig.tight_layout()
-plt.show()
+	plot_figure(t,V1,V2,t_pt,r_tr,r_sinc,V_pt,-0.02,0.02)
