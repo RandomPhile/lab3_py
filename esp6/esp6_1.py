@@ -7,6 +7,9 @@ colori = ['b','g','r','c','m','y','k']
 
 
 
+
+'''
+
 with open('dati/scope_1.csv', newline='') as csvfile:
 	V1 = np.array([])
 	V2 = np.array([])
@@ -37,3 +40,4 @@ plt.xlabel('V')
 plt.ylabel('I')
 plt.legend()
 plt.show()
+'''
