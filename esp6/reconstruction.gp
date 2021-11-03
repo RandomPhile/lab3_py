@@ -12,7 +12,7 @@ set ytics font "Helvetica,14"
 #################
 # Main Settings #
 #################
-T = 1/1007.5
+T = 1/1005.3
 
 delay = 0.0005
 
@@ -23,7 +23,7 @@ delay = 0.0005
 plot \
 "sine_100_Hz.csv" u 1:2 w l lw 1 lc rgb 'blue', \
 "sine_100_Hz.csv" u 1:3 w l lw 1 lc rgb 'red', \
-"< cat sine_100_Hz.csv | tail -n +3 | awk '{if ((NR%10) == 0) print}'" u 1:3 w p pt 7 lc rgb 'black'
+"< cat sine_100_Hz.csv | tail -n +3 | awk '{if ((NR%40) == 0) print}'" u 1:3 w p pt 7 lc rgb 'black'
 
 pause -1
 
