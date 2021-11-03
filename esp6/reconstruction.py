@@ -1,12 +1,6 @@
-from scipy.optimize import curve_fit
-from math import *
 import numpy as np
 import matplotlib.pyplot as plt
 from functions import *
-colori = ['b','g','r','c','m','y','k']
-
-#V1 segnale sinusoidale; V2 segnale sample and hold
-#t,V1,V2 = data_from_csv('reconstructionExample/sine_100_Hz')
 
 parametri = [
 {'name': 'reconstructionExample/sine_100_Hz', 'T': 0.001, 'delay': -0.0001, 'err': False},
@@ -21,11 +15,11 @@ parametri = [
 ]
 
 
-for n in [1,2,3,4,5,6,7,8]:
+for n in [1]:#[[1,2,3,4,5,6,7,8]:
 	print(n)
 	name,T,delay,err = parametri[n]['name'],parametri[n]['T'],parametri[n]['delay'],parametri[n]['err']
 
 	t,V1,V2 = data_from_csv(name,True)
 	t_pt,V_pt,r_tr,r_sinc = reconstruct(t,V2,T,delay,err)
 
-	plot_figure(t,V1,V2,t_pt,r_tr,r_sinc,V_pt,-0.02,0.02)
+	plot_figure(t,V1,V2,t_pt,r_tr,r_sinc,V_pt,-0.02,0.02,n,save=False)

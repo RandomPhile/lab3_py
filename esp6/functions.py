@@ -83,7 +83,7 @@ def reconstruct(t,V,T,delay,err):
 
 	return t_pt, V_pt, r_tr(t,t_pt,V_pt,T), r_sinc(t,t_pt,V_pt,T)
 
-def plot_figure(t,V1,V2,t_pt,r_tr,r_sinc,V_pt,t_min,t_max):
+def plot_figure(t,V1,V2,t_pt,r_tr,r_sinc,V_pt,t_min,t_max,n,save=False):
 	##rimuovi dati al di fuori dei limiti temporali
 	index_t = (t < t_min) | (t > t_max)
 	index_t_pt = (t_pt < t_min) | (t_pt > t_max)
@@ -102,12 +102,12 @@ def plot_figure(t,V1,V2,t_pt,r_tr,r_sinc,V_pt,t_min,t_max):
 	# ax0.axis([-0.002, 0.002, -.5, .5])
 	# ax1.axis([-0.020, -0.016, -.5, .5])
 
-	ax0.plot(t,V1, 'b-', label='Segnale', linewidth=1)
-	ax0.plot(t,V2, 'g-', label='Campionamento')
+	ax0.plot(t,V1, 'b-', label='Segnale', linewidth=0.7)
+	ax0.plot(t,V2, 'g-', label='Campionamento', linewidth=0.5)
 	ax0.plot(t_pt,V_pt, 'k+', label='Punti campionati')
 
-	ax1.plot(t,V1, 'b-', label='Segnale', linewidth=1)
-	ax1.plot(t,V2, 'g-', label='Campionamento')
+	ax1.plot(t,V1, 'b-', label='Segnale', linewidth=0.7)
+	ax1.plot(t,V2, 'g-', label='Campionamento', linewidth=0.5)
 	ax1.plot(t_pt,V_pt, 'k+', label='Punti campionati')
 
 	ax0.plot(t, r_tr, 'r-', linewidth=0.7)
@@ -116,7 +116,6 @@ def plot_figure(t,V1,V2,t_pt,r_tr,r_sinc,V_pt,t_min,t_max):
 	ax1.set_xlabel('t [s]')
 	ax0.set_ylabel('V [V]')
 	ax1.set_ylabel('V [V]')
-	#ax0.legend()
 
 	ax0.minorticks_on()
 	ax0.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
@@ -126,4 +125,8 @@ def plot_figure(t,V1,V2,t_pt,r_tr,r_sinc,V_pt,t_min,t_max):
 	ax1.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
 	ax1.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
 	fig.tight_layout()
-	plt.show()
+	
+	ax0.legend(['#'+str(n)], loc=1)
+	if save:
+		fig.savefig('fig/fig'+str(n)+'.eps', format='eps')
+	fig.show()
