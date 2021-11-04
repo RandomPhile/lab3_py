@@ -53,7 +53,6 @@ def r_tr(t,t_pt,V_pt,T):
 def r_sinc(t,t_pt,V_pt,T):
 	out = 0
 	for j in range(len(t_pt)):
-		print(t - t_pt[j])
 		out += V_pt[j] * k_sinc(t - t_pt[j],T)
 	return out
 
