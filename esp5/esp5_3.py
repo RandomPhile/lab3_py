@@ -3,8 +3,10 @@ from scipy.optimize import curve_fit
 from math import *
 import numpy as np
 import matplotlib.pyplot as plt
-colori = ['b','g','r','c','m','y','k']
 
+from tabulate import tabulate
+from texttable import Texttable
+import latextable
 
 R1 = np.array([10e3, 1e3 , 10e3])
 R2 = np.array([10e3, 10e3, 1e3 ])
@@ -27,4 +29,18 @@ ax1.plot(rapporto, T, 'r*', label='periodo')
 ax1.legend()
 
 print(log(21))
-#plt.show()#
+#plt.show()
+
+
+rows = [['R1','R2','r']]
+for i in [0,1,2]:
+	rows.append([1,2,3])
+
+table = Texttable()
+table.set_cols_align(['c'] * 3)
+table.set_deco(Texttable.HEADER | Texttable.VLINES)
+table.add_rows(rows)
+
+print(tabulate(rows, headers='firstrow'))
+print('\nTabulate Latex:')
+print(tabulate(rows, headers='firstrow', tablefmt='latex'))
