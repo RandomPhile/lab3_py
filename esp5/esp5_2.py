@@ -1,41 +1,43 @@
-import csv
+from functions5 import *
 from scipy.optimize import curve_fit
 from math import *
 import numpy as np
 import matplotlib.pyplot as plt
-colori = ['b','g','r','c','m','y','k']
 
 '''
 ampiezza 1.48V 
 dt       6.25ms
 f        160Hz
-
 '''
+#A = 1.65/4#V
+A = 1.48/4#V
+f = 160#Hz
+T = 1/f
+w_s = 2*pi/T
 
-with open('parte1/scope_3.csv', newline='') as csvfile:
-	t = np.array([])
-	V = np.array([])
-	reader = csv.DictReader(csvfile)
+t,V = data_from_csv('dati/scope_3',False)
+t -= T/4
+#V += 0.1/4
 
-	i = 0
-	for row in reader:
-		#if i>25 and i<280:
-		if i>2:
-			t = np.append(t, float(row['x-axis']))
-			V = np.append(V, float(row['1']))
-		i+=1
-t = t[2:]
-V = V[2:]
+def V_mod(t, mu):
+	return A*( 2*np.cos(w_s*t) - (mu/(4*w_s))*np.sin(3*w_s*t) )
+
+fig1 = plt.figure()
+ax0 = fig1.subplots()
+ax0.plot(t,V, 'b-', label=r'$V$', linewidth=1)
+
+popt, pcov = curve_fit(V_mod, t, V)
+
+ax0.plot(t, V_mod(t, 0), 'k-', label=r'$\mu=0$', linewidth=1)
+ax0.plot(t, V_mod(t, *popt), 'r-', label=r'Fit: $\mu=%5.2f$' % tuple(popt), linewidth=1)
+
+ax0.set_xlabel('t [s]')
+ax0.set_ylabel('V [V]')
+
+ax0.minorticks_on()
+ax0.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
+ax0.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
+ax0.legend()
 
 
-plt.plot(t, V, 'b-', label='data')
-
-
-#popt, pcov = curve_fit(I_func, V, I)#bounds=([], [])
-#plt.plot(V, I_func(V, *popt), 'r-', label='fit: R_L=%5.3f, alpha=%5.3f' % tuple(popt))
-
-
-plt.xlabel('t')
-plt.ylabel('V')
-plt.legend()
-plt.show()
+fig1.show()

@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from functions import *
+from functions6 import *
 
 parametri = [
 {'name': 'reconstructionExample/sine_100_Hz', 'T': 0.001, 'delay': -0.0001},
