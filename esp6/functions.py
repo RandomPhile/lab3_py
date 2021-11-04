@@ -47,41 +47,32 @@ def k_sinc(t_,T):
 def r_tr(t,t_pt,V_pt,T):
 	out = 0
 	for j in range(len(t_pt)):
-		out += -V_pt[j] * k_tr(t + t_pt[j],T)
+		out += V_pt[j] * k_tr(t - t_pt[j],T)
 	return out
 
 def r_sinc(t,t_pt,V_pt,T):
 	out = 0
 	for j in range(len(t_pt)):
-		out += -V_pt[j] * k_sinc(t + t_pt[j],T)
+		print(t - t_pt[j])
+		out += V_pt[j] * k_sinc(t - t_pt[j],T)
 	return out
 
-def reconstruct(t,V,T,delay,err):
+def reconstruct(t,V,T,delay):
 	t_pt = np.array([])
 	V_pt = np.array([])
 
-	if err:
-		t_i = delay# + T/2
+	t_i = delay
 
-		while t_i>min(t):
-			t_i -= T
-		while t_i<max(t):
-			index = np.argmin(abs(t - t_i))
-			t_pt = np.append(t_pt, t[index]-T/2)
-			V_pt = np.append(V_pt, V[index])
-			t_i += T
-	else:
-		t_i = delay
-
-		while t_i>min(t):
-			t_i -= T
-		while t_i<max(t):
-			index = np.argmin(abs(t - t_i))
-			t_pt = np.append(t_pt, t[index]-T/2)
-			V_pt = np.append(V_pt, V[index])
-			t_i += T
+	while t_i>min(t):
+		t_i -= T
+	while t_i<max(t):
+		index = np.argmin(abs(t - t_i))
+		t_pt = np.append(t_pt, t[index]-T/2)
+		V_pt = np.append(V_pt, V[index])
+		t_i += T
 
 	return t_pt, V_pt, r_tr(t,t_pt,V_pt,T), r_sinc(t,t_pt,V_pt,T)
+	
 
 def plot_figure(t,V1,V2,t_pt,r_tr,r_sinc,V_pt,t_min,t_max,n,save=False):
 	##rimuovi dati al di fuori dei limiti temporali
