@@ -10,41 +10,59 @@ dt       6.25ms
 f        160Hz
 '''
 #A = 1.635/2#V
-A = 1.48/2#V
-f = 160#Hz
-T = 1/f
-w_s = 2*pi/T
-print(w_s)
-t,V = data_from_csv('dati/scope_3',False)
 
-def V_fit0(t, A, phi_A, C, w_s):
+t,V_exp = data_from_csv('dati/scope_3',False)
+
+######Fit solo w_s
+
+def V_(t, A, phi_A, w_s, C):
 	return A * np.cos(1000*w_s*t + phi_A) + C
 
-def V_fit(t, A, phi_A, B, phi_B, C):
-	return A * np.cos(w_s*t + phi_A) + B * np.cos(3*w_s*t + phi_B) + C
+######Fit anche 3w_s
 
-fig1 = plt.figure()
-ax0 = fig1.subplots()
-
-fit_out0, c0 = curve_fit(V_fit0, t, V)
-fit_out, c = curve_fit(V_fit, t, V)
-
-print(fit_out0,fit_out)
-
-V_mod0 = V_fit0(t, *fit_out0)
-V_mod = V_fit(t, *fit_out)
-ax0.plot(t,V, 'b-', label=r'$V$', linewidth=1)
-ax0.plot(t, V_mod0, 'r-', label=r'Fit', linewidth=1)
-ax0.plot(t, (V-V_mod0)*100, 'g-', label=r'residui*50', linewidth=1)
+def V_2(t, A, phi_A, w_s, C, mu, phi_B):
+	return A * np.cos(1000*w_s*t + phi_A) - (mu/(4*w_s)) * np.sin(3*w_s*t + phi_B) + C
 
 
-# ax0.plot(t, V_mod_A(t, A_fit), 'k-', label=r'$\mu=0$', linewidth=1)
-# #ax0.plot(t, V_mod(t, *popt), 'r-', label=r'Fit: $\mu=%5.2f$' % tuple(popt), linewidth=1)
+fig = plt.figure(); ax0,ax1 = fig.subplots(2,1)
 
-ax0.set_xlabel('t [s]')
-ax0.set_ylabel('V [V]')
+fit, c = curve_fit(V_, t, V_exp)
+fit2, c = curve_fit(V_2, t, V_exp)
 
-grid(ax0)
-ax0.legend()
+def V_3(t, A, phi_A, C):
+	return A * np.cos(1000*3*fit[2]*t + phi_A) + C
 
-fig1.show()
+
+V = V_(t, *fit)
+V2 = V_2(t, *fit2)
+
+fit3, c = curve_fit(V_3, t, V_exp-V)
+V3 = V_3(t, *fit3)
+print('A             phi_A       w_s        C           mu           phi_B')
+print(fit)
+print(fit2)
+print(fit3)
+
+
+
+
+ax0.plot(t, V, 'r-', label=r'Fit senza $3w_s$', linewidth=1)
+ax0.plot(t, V2, 'g-', label=r'Fit con $3w_s$', linewidth=1)
+ax0.plot(t, V_exp, 'b-', label=r'Segnale misurato', linewidth=1)
+ax1.plot(t, (V_exp-V)*1000, 'r-', label=r'Fit', linewidth=1)
+ax1.plot(t, (V_exp-V)*1000, 'g-', label=r'Fit', linewidth=1)
+ax1.plot(t, V3*1000, 'k-', label=r'Fit', linewidth=1.5)
+
+ax2 = plt.axes([.21, .71, .15, .15])
+ax2.plot(t, V_exp, 'b-', linewidth=1)
+ax2.plot(t, V, 'r-',     linewidth=1)
+ax2.plot(t, V2, 'g-',    linewidth=1)
+ax2.set_xlim([0.0015, 0.0016])
+ax2.set_ylim([0.793, 0.795])
+
+ax0.set_ylim([-1, 1])
+ax1.set_ylim([-4, 4])
+
+ax1.set_xlabel('t [s]'); ax0.set_ylabel('V [V]'); ax1.set_ylabel('Residui [mV]'); grid(ax0); grid(ax1); grid(ax2); 
+#ax0.legend()
+fig.show()
