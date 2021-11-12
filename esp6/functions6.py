@@ -74,6 +74,8 @@ def reconstruct(t,V,T,delay):
 	
 
 def plot_figure(t,V1,V2,t_pt,r_tr,r_sinc,V_pt,t_min,t_max,n,save=False):
+	legend_list = [r'$50\ $Hz', r'$100\ $Hz', r'$200\ $Hz', r'$900\ $Hz', 
+				   r'$900\ $Hz', r'$200\ $Hz', r'$100\ $Hz', r'$50\ $Hz']
 	##rimuovi dati al di fuori dei limiti temporali
 	index_t = (t < t_min) | (t > t_max)
 	index_t_pt = (t_pt < t_min) | (t_pt > t_max)
@@ -116,7 +118,7 @@ def plot_figure(t,V1,V2,t_pt,r_tr,r_sinc,V_pt,t_min,t_max,n,save=False):
 	ax1.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
 	fig.tight_layout()
 	
-	ax0.legend(['#'+str(n)], loc=1)
+	ax0.legend([legend_list[n-1]], loc=1)
 	if save:
 		fig.savefig('fig/fig'+str(n)+'.eps', format='eps')
 	fig.show()

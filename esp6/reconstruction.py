@@ -15,7 +15,7 @@ parametri = [
 ]
 
 
-for n in [1,2,3,4,5,6,7,8]:
+for n in [1]:#[1,2,3,4,5,6,7,8]:
 	print('#',n)
 	
 	name,T,delay = parametri[n]['name'],parametri[n]['T'],parametri[n]['delay']
