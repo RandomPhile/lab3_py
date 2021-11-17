@@ -1,4 +1,3 @@
-from math import pi
 import numpy as np
 
 def reg_lin(x, y):
