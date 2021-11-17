@@ -71,8 +71,9 @@ def reconstruct(t,V,T,delay):
 		t_i += T
 
 	return t_pt, V_pt, r_tr(t,t_pt,V_pt,T), r_sinc(t,t_pt,V_pt,T)
+	
 
-def plot_single(t,V1,V2,t_pt,V_pt,r, t_min,t_max, n, ax):
+def plot_figure(t,V1,V2,t_pt,r_tr,r_sinc,V_pt,t_min,t_max,n,save=False):
 	legend_list = [r'$50\ $Hz', r'$100\ $Hz', r'$200\ $Hz', r'$900\ $Hz', 
 				   r'$900\ $Hz', r'$200\ $Hz', r'$100\ $Hz', r'$50\ $Hz']
 	##rimuovi dati al di fuori dei limiti temporali
@@ -80,22 +81,44 @@ def plot_single(t,V1,V2,t_pt,V_pt,r, t_min,t_max, n, ax):
 	index_t_pt = (t_pt < t_min) | (t_pt > t_max)
 	V1 = np.delete(V1, index_t)
 	V2 = np.delete(V2, index_t)
-	r = np.delete(r, index_t)
+	r_tr = np.delete(r_tr, index_t)
+	r_sinc = np.delete(r_sinc, index_t)
 	t = np.delete(t, index_t)
 	V_pt = np.delete(V_pt, index_t_pt)
 	t_pt = np.delete(t_pt, index_t_pt)
 
+	##crea nuova figura
+	fig = plt.figure()
+	ax0,ax1 = fig.subplots(2,1)
+
 	# ax0.axis([-0.002, 0.002, -.5, .5])
 	# ax1.axis([-0.020, -0.016, -.5, .5])
 
-	ax.plot(t,V1, 'b-', label='Segnale', linewidth=0.7)
-	ax.plot(t,V2, 'g-', label='Campionamento', linewidth=0.5)
-	ax.plot(t_pt,V_pt, 'k+', label='Punti campionati')
+	ax0.plot(t,V1, 'b-', label='Segnale', linewidth=0.7)
+	ax0.plot(t,V2, 'g-', label='Campionamento', linewidth=0.5)
+	ax0.plot(t_pt,V_pt, 'k+', label='Punti campionati')
 
-	ax.plot(t, r, 'r-', linewidth=0.7)
+	ax1.plot(t,V1, 'b-', label='Segnale', linewidth=0.7)
+	ax1.plot(t,V2, 'g-', label='Campionamento', linewidth=0.5)
+	ax1.plot(t_pt,V_pt, 'k+', label='Punti campionati')
 
-	ax.set_xlabel('t [s]')
-	ax.set_ylabel('V [V]')
-	ax.legend([legend_list[n]], loc=1)
+	ax0.plot(t, r_tr, 'r-', linewidth=0.7)
+	ax1.plot(t, r_sinc, 'r-', linewidth=0.7)
+
+	ax1.set_xlabel('t [s]')
+	ax0.set_ylabel('V [V]')
+	ax1.set_ylabel('V [V]')
+
+	ax0.minorticks_on()
+	ax0.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
+	ax0.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
+
+	ax1.minorticks_on()
+	ax1.grid(b=True, which='major', color='#d3d3d3', linestyle='-')
+	ax1.grid(b=True, which='minor', color='#d3d3d3', linestyle=':')
+	fig.tight_layout()
 	
-	#fig.tight_layout()
+	ax0.legend([legend_list[n-1]], loc=1)
+	if save:
+		fig.savefig('fig/fig'+str(n)+'.eps', format='eps')
+	fig.show()

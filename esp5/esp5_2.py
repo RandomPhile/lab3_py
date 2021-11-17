@@ -10,7 +10,8 @@ dt       6.25ms
 f        160Hz
 '''
 #A = 1.635/2#V
-
+R, C = 100e3, 10e-9
+print(1/(2*pi*R*C))
 t,V_exp = data_from_csv('dati/scope_3',False)
 
 ######Fit solo w_s
@@ -21,7 +22,7 @@ def V_(t, A, phi_A, w_s, C):
 ######Fit anche 3w_s
 
 def V_2(t, A, phi_A, w_s, C, mu, phi_B):
-	return A * np.cos(1000*w_s*t + phi_A) - (mu/(4*w_s)) * np.sin(3*w_s*t + phi_B) + C
+	return A * np.cos(1000*w_s*t + phi_A) - (mu*10/(4*w_s)) * np.sin(3*w_s*t + phi_B) + C
 
 
 fig = plt.figure(); ax0,ax1 = fig.subplots(2,1)
@@ -29,8 +30,8 @@ fig = plt.figure(); ax0,ax1 = fig.subplots(2,1)
 fit, c = curve_fit(V_, t, V_exp)
 fit2, c = curve_fit(V_2, t, V_exp)
 
-def V_3(t, A, phi_A, C):
-	return A * np.cos(1000*3*fit[2]*t + phi_A) + C
+def V_3(t, A, phi_A, w_s, C):
+	return A * np.cos(1000*3*w_s*t + phi_A) + C
 
 
 V = V_(t, *fit)
@@ -65,4 +66,5 @@ ax1.set_ylim([-4, 4])
 
 ax1.set_xlabel('t [s]'); ax0.set_ylabel('V [V]'); ax1.set_ylabel('Residui [mV]'); grid(ax0); grid(ax1); grid(ax2); 
 #ax0.legend()
+#fig.savefig('fig/w_s.eps', format='eps')
 fig.show()
