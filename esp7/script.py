@@ -1,17 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib as mpl
 from functions import *
 from base import *
 from scipy.optimize import curve_fit
-
-if plt.rcParams["text.usetex"] is False:
-    plt.rcParams["text.usetex"] = True
-    print("\nWARNING: text.usetex is now set to True\n")
-
-if "siunitx" not in plt.rcParams["text.latex.preamble"]:
-    plt.rcParams["text.latex.preamble"] += (r"\usepackage{siunitx}")
-print(plt.rcParams["text.latex.preamble"])
 
 #N = np.arange(1,13)
 N =          np.array([1,    2,    3,    4,    5,    6,    7,    8,    9,    10,   11,    12])
@@ -33,18 +24,16 @@ dm, dq = np.sqrt(np.diag(pcov))
 
 fig = plt.figure()
 ax = fig.subplots()
-ax.errorbar(N, t*1e9, yerr=dt*1e9, fmt=' ', color='b', marker='o', ms=2, label='Dati')
-#ax.plot(N,t_mod(N,m,q)*1e9, label=r'Fit lineare: $m=(4.0\pm0.1\qty{9.8}{kg.m.s^{-2}})$ns')
-#ax.plot(N,t_mod(N,m,q)*1e9, label=r'Fit lineare: $\qty{9.8}{kg.m.s^{-2}}$')
-plt.title(r"Disctances given in \si{\metre}")
+ax.errorbar(N, t*1e9, yerr=dt*1e9, fmt=' ', color='b', marker='o', ms=2, label='Data')
+ax.plot(N,t_mod(N,m,q)*1e9, label=r'Linear fit: $m=(4.0\pm0.1)$ns')
 #ax.plot(N,t_mod0(N,m0))
 
 print('m = ',m,'+-',dm)
-
-#ax.set_xlabel(r'$N$: # di porte logiche')
-ax.set_ylabel(r'Ritardo $t_r$ [ns]')
+print('q = ',q,'+-',dq)
+ax.set_xlabel(r'$N$: # of logic gates')
+ax.set_ylabel(r'Propagation delay $t_d$ [ns]')
 
 ax.legend()
 grid(ax)
-fig.savefig('fig/fit.eps', format='eps')
-#fig.show()
+#fig.savefig('fig/fit.eps', format='eps')
+fig.show()
